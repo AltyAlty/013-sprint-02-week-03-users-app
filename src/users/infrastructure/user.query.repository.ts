@@ -41,8 +41,4 @@ export const usersQwRepository = {
       createdAt: user.createdAt.toISOString(),
     };
   },
-
-  _checkObjectId(id: string): boolean {
-    return ObjectId.isValid(id);
-  },
 };

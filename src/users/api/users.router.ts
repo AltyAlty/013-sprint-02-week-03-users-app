@@ -10,10 +10,10 @@ import { UsersQueryFieldsType } from '../types/users.queryFields.type';
 import { IPagination } from '../../common/types/pagination';
 import { sortQueryFieldsUtil } from '../../common/utils/sortQueryFields.util';
 import { pageNumberValidation } from '../../common/validation/sorting.pagination.validation';
-import { emailValidation } from './middlewares/email.validation';
+import { emailValidation } from '../middlewares/email.validation';
 import { inputValidation } from '../../common/validation/input.validation';
-import { passwordValidation } from './middlewares/password.validation';
-import { loginValidation } from './middlewares/login.validation';
+import { passwordValidation } from '../middlewares/password.validation';
+import { loginValidation } from '../middlewares/login.validation';
 import { HttpStatuses } from '../../common/types/httpStatuses';
 
 export const usersRouter = Router();

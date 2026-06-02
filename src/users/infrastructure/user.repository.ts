@@ -18,8 +18,11 @@ export const usersRepository = {
   },
 
   async findByLoginOrEmail(loginOrEmail: string): Promise<WithId<IUserDB> | null> {
-    return db.getCollections().usersCollection.findOne({
-      $or: [{ email: loginOrEmail }, { login: loginOrEmail }],
-    });
+    return db.getCollections().usersCollection.findOne({ $or: [{ email: loginOrEmail }, { login: loginOrEmail }] });
+  },
+
+  async doesExistByLoginOrEmail(login: string, email: string): Promise<boolean> {
+    const user = await db.getCollections().usersCollection.findOne({ $or: [{ email }, { login }] });
+    return !!user;
   },
 };

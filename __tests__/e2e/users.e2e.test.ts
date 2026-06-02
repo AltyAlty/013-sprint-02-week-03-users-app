@@ -44,7 +44,11 @@ describe('USERS_TESTS', () => {
     const newUser = await request(app)
       .post(routersPaths.users)
       .auth(ADMIN_LOGIN, ADMIN_PASS)
-      .send({ login: userDto.login, email: userDto.email, password: userDto.pass })
+      .send({
+        login: userDto.login,
+        email: userDto.email,
+        password: userDto.pass,
+      })
       .expect(201);
 
     expect(newUser.body).toEqual({
@@ -63,28 +67,43 @@ describe('USERS_TESTS', () => {
 
   it('shouldn`t create user with incorrect login: STATUS 400', async () => {
     userDto = testingDtosCreator.createUserDto({ login: '' });
+
     await request(app)
       .post(routersPaths.users)
       .auth(ADMIN_LOGIN, ADMIN_PASS)
-      .send({ login: userDto.login, email: userDto.email, password: userDto.pass })
+      .send({
+        login: userDto.login,
+        email: userDto.email,
+        password: userDto.pass,
+      })
       .expect(400);
   });
 
   it('shouldn`t create user with incorrect email: STATUS 400', async () => {
     userDto = testingDtosCreator.createUserDto({ email: 'hhh' });
+
     await request(app)
       .post(routersPaths.users)
       .auth(ADMIN_LOGIN, ADMIN_PASS)
-      .send({ login: userDto.login, email: userDto.email, password: userDto.pass })
+      .send({
+        login: userDto.login,
+        email: userDto.email,
+        password: userDto.pass,
+      })
       .expect(400);
   });
 
   it('shouldn`t create user with incorrect password: STATUS 400', async () => {
     userDto = testingDtosCreator.createUserDto({ pass: 'hh' });
+
     await request(app)
       .post(routersPaths.users)
       .auth(ADMIN_LOGIN, ADMIN_PASS)
-      .send({ login: userDto.login, email: userDto.email, password: userDto.pass })
+      .send({
+        login: userDto.login,
+        email: userDto.email,
+        password: userDto.pass,
+      })
       .expect(400);
   });
 

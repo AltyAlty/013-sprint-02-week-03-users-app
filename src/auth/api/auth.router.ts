@@ -3,15 +3,18 @@ import { RequestWithBody, RequestWithUserId } from '../../common/types/requests'
 import { LoginDto } from '../types/login.dto';
 import { authService } from '../domain/auth.service';
 import { routersPaths } from '../../common/path/paths';
-import { passwordValidation } from '../../users/api/middlewares/password.validation';
+import { passwordValidation } from '../../users/middlewares/password.validation';
 import { inputValidation } from '../../common/validation/input.validation';
-import { loginOrEmailValidation } from '../../users/api/middlewares/login.or.emaol.validation';
+import { loginOrEmailValidation } from '../../users/middlewares/login.or.email.validation';
 import { HttpStatuses } from '../../common/types/httpStatuses';
 import { ResultStatus } from '../../common/result/resultCode';
 import { resultCodeToHttpException } from '../../common/result/resultCodeToHttpException';
 import { IdType } from '../../common/types/id';
 import { usersQwRepository } from '../../users/infrastructure/user.query.repository';
 import { accessTokenGuard } from './guards/access.token.guard';
+import { emailValidation } from '../../users/middlewares/email.validation';
+import { loginValidation } from '../../users/middlewares/login.validation';
+import { CreateUserDto } from '../../users/types/create-user.dto';
 
 export const authRouter = Router();
 
@@ -37,4 +40,29 @@ authRouter.get(routersPaths.auth.me, accessTokenGuard, async (req: RequestWithUs
   if (!userId) return res.sendStatus(HttpStatuses.Unauthorized);
   const me = await usersQwRepository.findById(userId);
   return res.status(HttpStatuses.Success).send(me);
+});
+
+authRouter.post(
+  routersPaths.auth.registration,
+  passwordValidation,
+  loginValidation,
+  emailValidation,
+  inputValidation,
+  async (req: RequestWithBody<CreateUserDto>, res: Response) => {
+    const { login, email, password } = req.body;
+    const result = await authService.registerUser(login, password, email);
+    if (result.status === ResultStatus.Success) return res.sendStatus(HttpStatuses.Created);
+  }
+);
+
+authRouter.post(routersPaths.auth.registrationConfirmation, inputValidation, async (req: Request, res: Response) => {
+  const { code } = req.body;
+  //some logic
+  return res.sendStatus(HttpStatuses.Created);
+});
+
+authRouter.post(routersPaths.auth.registrationEmailResending, inputValidation, async (req: Request, res: Response) => {
+  const { email } = req.body;
+  //some logic
+  return res.sendStatus(HttpStatuses.Created);
 });

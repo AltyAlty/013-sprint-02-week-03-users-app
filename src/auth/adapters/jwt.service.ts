@@ -12,7 +12,7 @@ export const jwtService = {
     try {
       return jwt.decode(token);
     } catch (e: unknown) {
-      console.error("Can't decode the token", e);
+      console.error(`Can't decode the token`, e);
       return null;
     }
   },
@@ -21,7 +21,7 @@ export const jwtService = {
     try {
       return jwt.verify(token, appConfig.AC_SECRET) as { userId: string };
     } catch (error) {
-      console.error('Token verify some error');
+      console.error('Token verification error');
       return null;
     }
   },

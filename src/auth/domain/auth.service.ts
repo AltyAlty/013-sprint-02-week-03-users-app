@@ -5,6 +5,9 @@ import { jwtService } from '../adapters/jwt.service';
 import { WithId } from 'mongodb';
 import { IUserDB } from '../../users/types/user.db.interface';
 import { Result } from '../../common/result/result.type';
+import { User } from '../../users/domain/user.entity';
+import { nodemailerService } from '../adapters/nodemailer.service';
+import { emailExamples } from '../adapters/emailExamples';
 
 export const authService = {
   async loginUser(loginOrEmail: string, password: string): Promise<Result<{ accessToken: string } | null>> {
@@ -51,6 +54,52 @@ export const authService = {
     return {
       status: ResultStatus.Success,
       data: user,
+      extensions: [],
+    };
+  },
+
+  async registerUser(login: string, pass: string, email: string): Promise<Result<User | null>> {
+    const user = await usersRepository.doesExistByLoginOrEmail(login, email);
+
+    if (user)
+      return {
+        status: ResultStatus.BadRequest,
+        errorMessage: 'Bad Request',
+        data: null,
+        extensions: [{ field: 'loginOrEmail', message: 'Already Registered' }],
+      };
+
+    const passwordHash = await bcryptService.generateHash(pass);
+    const newUser = new User(login, email, passwordHash);
+    await usersRepository.create(newUser);
+
+    nodemailerService
+      .sendEmail(newUser.email, newUser.emailConfirmation.confirmationCode, emailExamples.registrationEmail)
+      .catch(er => console.error('error in send email:', er));
+
+    return {
+      status: ResultStatus.Success,
+      data: newUser,
+      extensions: [],
+    };
+  },
+
+  async confirmEmail(code: string): Promise<Result<any>> {
+    //some logic
+    const isUuid = new RegExp(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i).test(code);
+
+    if (!isUuid) {
+      return {
+        status: ResultStatus.BadRequest,
+        errorMessage: 'Bad Request',
+        data: null,
+        extensions: [{ field: 'code', message: 'Incorrect code' }],
+      };
+    }
+
+    return {
+      status: ResultStatus.Success,
+      data: null,
       extensions: [],
     };
   },

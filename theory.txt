@@ -796,45 +796,46 @@ ELK может быть расширен до Elastic Stack, где вместо
 0.2 Файл "/src/initApp.ts" - настройка приложения.
 0.3 Файл "/src/db.ts" - код, связанный с БД.
 
-1. "/src/auth/" - код, связанный с авторизацией.
-1.2 "/src/auth/adapters/bcrypt.service.ts" - адаптер для работы с библиотекой bcrypt. ???
-1.3 "/src/auth/adapters/emailExamples.ts" - ???
-1.4 "/src/auth/adapters/jwt.service.ts" - ???
-1.5 "/src/auth/adapters/nodemailer.service.ts" - ???
+1. "/src/auth/" - код, связанный с регистрацией, аутентификацией и авторизацией.
+1.1 "/src/auth/adapters/" - адаптеры.
+1.2 "/src/auth/adapters/bcrypt.service.ts" - адаптер для работы с библиотекой bcrypt.
+1.3 "/src/auth/adapters/emailExamples.ts" - примеры писем для кодов регистрации пользователей.
+1.4 "/src/auth/adapters/jwt.service.ts" - адаптер для работы с библиотекой jsonwebtoken.
+1.5 "/src/auth/adapters/nodemailer.service.ts" - адаптер для работы с библиотекой nodemailer.
 1.6 "/src/auth/api/auth.router.ts" - роутер для авторизации.
-1.7 "/src/auth/api/guards/base.auth.guard.ts" - middleware для basic авторизации. ???
-1.7 "/src/auth/api/guards/access.token.guard.ts" - ???
-1.8 "/src/auth/domain/auth.service.ts" - сервис для авторизации.
-1.9 "/src/auth/types/login.dto.ts" - DTO для логинизации.
+1.7 "/src/auth/api/guards/access.token.guard.ts" - middleware для проверки AT.
+1.8 "/src/auth/api/guards/base.auth.guard.ts" - middleware для basic авторизации.
+1.9 "/src/auth/domain/auth.service.ts" - сервис для работы с регистрацией, аутентификацией и авторизацией.
+1.10 "/src/auth/types/login.dto.ts" - input DTO для логинизации.
 
 2. "/src/common/" - общий код для всего приложения.
 2.1 "/src/common/config/config.ts" - конфигурационный файл с переменными окружения.
 2.2 "/src/common/path/paths.ts" - пути маршрутов.
-2.3 "/src/common/types/result.type.ts" - ???
-2.4 "/src/common/types/resultCode.ts" - ???
-2.5 "/src/common/types/resultCodeToHttpException.ts" - ???
+2.3 "/src/common/types/result.type.ts" - тип для ResultObject.
+2.4 "/src/common/types/resultCode.ts" - типы для поля "status" в ResultObject.
+2.5 "/src/common/types/resultCodeToHttpException.ts" - маппер для поля "status" для ResultObject.
 2.6 "/src/common/types/httpStatuses.ts" - тип для списка кодов ответов сервера.
-2.7 "/src/common/types/id.ts" - тип для ID пользователей.
+2.7 "/src/common/types/id.ts" - тип для объекта, содержащего ID, внутри запросов.
 2.8 "/src/common/types/index.d.ts" - расширение встроенного тип Request из Express.
-2.9 "/src/common/types/pagination.ts" - интерфейс для настроек пагинации. ???
-2.10 "/src/common/types/requests.ts" - типы для тел запросов.
+2.9 "/src/common/types/pagination.ts" - интерфейс для настроек пагинации.
+2.10 "/src/common/types/requests.ts" - типы для тел запросов в хендлерах.
 2.11 "/src/common/types/sortQueryFields.type.ts" - ???
-2.12 "/src/common/types/sortQueryFilter.type.ts" - тип с полями для сортировки при пагинации. ???
+2.12 "/src/common/types/sortQueryFilter.type.ts" - ???
 2.13 "/src/common/utils/sortQueryFields.util.ts" - ???
 2.14 "/src/common/validation/input.validation.ts" - middleware для формирования ошибок валидации.
-2.15 "/src/common/validation/sorting.pagination.validation.ts" - валидация настроек пагинации.
+2.15 "/src/common/validation/sorting.pagination.validation.ts" - middlewares для валидации настроек пагинации.
 
 3. "/src/users/" - код, связанный с пользователями.
-3.1 "/src/users/api/users.router.ts" - роутер для пользователей.
-3.2 "/src/users/api/middlewares/email.validation.ts" - middleware для валидации email пользователя.
-3.3 "/src/users/api/middlewares/login.or.emaol.validation.ts"  - middleware для валидации логина/email пользователя.
-3.4 "/src/users/api/middlewares/login.validation.ts" - middleware для валидации логина пользователя.
-3.5 "/src/users/api/middlewares/password.validation.ts" - middleware для валидации пароля пользователя.
-3.6 "/src/users/domain/user.service.ts" - сервис для пользователей.
-3.7 "/src/users/infrastrucutre/user.repository.ts" - репозиторий для пользователей.
-3.8 "/src/users/infrastrucutre/user.query.repository.ts" - query-репозиторий для пользователей.
-3.9 "/src/users/types/create-user.dto.ts" - DTO для создания пользователя.
-3.10 "/src/users/types/user.db.interface.ts" - интерфейс для пользователей в БД. ???
-3.11 "/src/users/types/user.service.interface.ts" - ???
+3.1 "/src/users/api/users.router.ts" - роутер для работы с пользователеми.
+3.2 "/src/users/domain/user.entity.ts" - ???
+3.3 "/src/users/domain/user.service.ts" - сервис для работы с пользователеми.
+3.4 "/src/users/infrastrucutre/user.repository.ts" - репозиторий для работы с пользователеми.
+3.5 "/src/users/infrastrucutre/user.query.repository.ts" - query-репозиторий для работы с пользователеми.
+3.6 "/src/users/api/middlewares/email.validation.ts" - middleware для валидации email пользователей.
+3.7 "/src/users/api/middlewares/login.or.email.validation.ts"  - middleware для валидации логина/email пользователей.
+3.8 "/src/users/api/middlewares/login.validation.ts" - middleware для валидации логина пользователей.
+3.9 "/src/users/api/middlewares/password.validation.ts" - middleware для валидации пароля пользователей.
+3.10 "/src/users/types/create-user.dto.ts" - input DTO для создания пользователя.
+3.11 "/src/users/types/user.db.interface.ts" - интерфейс для пользователя в БД. ???
 3.12 "/src/users/types/user.view.interface.ts" - интерфейс для view модели пользователя. ???
 3.13 "/src/users/types/users.queryFields.type.ts" - тип с полями для сортировки при пагинации пользователей. ???
